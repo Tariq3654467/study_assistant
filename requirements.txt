@@ -1,4 +1,5 @@
-crewai==0.22.2
+crewai>=0.157.0
+
 python-dotenv
 openai>=1.0.0
 streamlit
