@@ -1,0 +1,14 @@
+crewai==0.22.2
+python-dotenv
+openai>=1.0.0
+streamlit
+# For PDF handling
+PyPDF2
+# For voice input
+SpeechRecognition
+pyaudio
+groq
+langchain-groq
+streamlit-lottie
+
+
