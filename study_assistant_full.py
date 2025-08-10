@@ -3,13 +3,13 @@
 # --- Patch Chroma before CrewAI imports it ---
 import os
 import chromadb
-from chromadb.config import Settings
-
-# Disable persistence to avoid Streamlit Cloud's disk write restrictions
 os.environ["PERSIST_DIRECTORY"] = ":memory:"
 os.environ["ALLOW_RESET"] = "true"
 os.environ["CHROMA_API_IMPL"] = "chromadb.api.local.LocalAPI"
 os.environ["CHROMA_SERVER_NO_PERSIST"] = "true"
+
+# Disable persistence to avoid Streamlit Cloud's disk write restrictions
+
 from dotenv import load_dotenv
 from crewai import Agent, Task, Crew
 from langchain_groq import ChatGroq
