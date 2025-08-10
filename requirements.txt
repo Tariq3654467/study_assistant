@@ -6,7 +6,6 @@ streamlit
 PyPDF2
 # For voice input
 SpeechRecognition
-pyaudio
 groq
 langchain-groq
 streamlit-lottie
