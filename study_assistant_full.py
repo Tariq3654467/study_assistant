@@ -7,6 +7,14 @@ load_dotenv()
 os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
 AGENTOPS_API_KEY = os.getenv("AGENTOPS_API_KEY")
 agentops.init(api_key=AGENTOPS_API_KEY)
+import os
+from dotenv import load_dotenv
+
+# --- Prevent ChromaDB from writing to disk ---
+import chromadb
+from chromadb.config import Settings
+os.environ["PERSIST_DIRECTORY"] = ""  # safety: blank disables persistence
+chromadb.Client(Settings(persist_directory=None))  # forces in-memory mode
 
 llm = ChatGroq(
     model="moonshotai/kimi-k2-instruct",
