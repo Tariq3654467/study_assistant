@@ -1,20 +1,23 @@
+# study_assistant_full.py
+
+# --- Patch Chroma before CrewAI imports it ---
 import os
+import chromadb
+from chromadb.config import Settings
+
+# Disable persistence to avoid Streamlit Cloud's disk write restrictions
+os.environ["PERSIST_DIRECTORY"] = ""
+chromadb.Client(Settings(persist_directory=None))
+
 from dotenv import load_dotenv
 from crewai import Agent, Task, Crew
 from langchain_groq import ChatGroq
 import agentops
+
 load_dotenv()
 os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
 AGENTOPS_API_KEY = os.getenv("AGENTOPS_API_KEY")
 agentops.init(api_key=AGENTOPS_API_KEY)
-import os
-from dotenv import load_dotenv
-
-# --- Prevent ChromaDB from writing to disk ---
-import chromadb
-from chromadb.config import Settings
-os.environ["PERSIST_DIRECTORY"] = ""  # safety: blank disables persistence
-chromadb.Client(Settings(persist_directory=None))  # forces in-memory mode
 
 llm = ChatGroq(
     model="moonshotai/kimi-k2-instruct",
@@ -23,7 +26,6 @@ llm = ChatGroq(
 )
 
 def run_study_assistant(topic, question):
-    # --- Agents ---
     explainer = Agent(
         role='Subject Explainer',
         goal='Explain academic topics in simple and engaging language.',
@@ -48,7 +50,6 @@ def run_study_assistant(topic, question):
         verbose=True
     )
 
-    # --- Tasks ---
     task1 = Task(
         description=f"Explain the topic '{topic}' in a student-friendly way.",
         expected_output="A simple explanation of the topic.",
@@ -67,7 +68,6 @@ def run_study_assistant(topic, question):
         agent=quiz_maker
     )
 
-    # --- Manual Execution of Tasks ---
     explanation = task1.execute()
     answer = task2.execute()
     quiz = task3.execute()
